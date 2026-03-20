@@ -14,7 +14,7 @@ window.siteContent = {
     linkedinLabel: "linkedin.com/in/votre-profil",
     heroActions: [
       { label: "Voir les projets", href: "#projects", variant: "primary" },
-      { label: "Me contacter", href: "mailto:jiahan.wang@eleve.isep.fr", variant: "secondary" },
+      { label: "Poser une question", href: "#assistant", variant: "secondary" },
       { label: "Voir le CV", href: "cv_mars2026.pdf", variant: "ghost", external: true }
     ],
     heroSignals: [
@@ -52,6 +52,27 @@ window.siteContent = {
         label: "inférence temps réel sur robot mobile embarqué"
       }
     ]
+  },
+  assistant: {
+    title: "Un assistant connecté à un RAG local, centré sur mon CV et mon profil technique.",
+    description:
+      "La base de connaissances indexe pour l'instant mon CV converti en base textuelle, avec une structure pensée pour accueillir ensuite d'autres projets, notes techniques ou publications. L'embedding est local, gratuit et volontairement léger pour tenir sur une petite machine ; seul le LLM de génération se branche sur votre API.",
+    hint:
+      "Le service répond dans la langue de la question et cite les passages récupérés par le RAG.",
+    welcome:
+      "Bonjour. Vous pouvez me poser une question sur mes projets IA, mon expérience en RAG, mes systèmes embarqués, mon parcours ISEP / INSA ou mon objectif d'alternance.",
+    prompts: [
+      "Quelle expérience a-t-il déjà en RAG ?",
+      "Quels projets embarqués a-t-il construits ?",
+      "Quel type d'alternance recherche-t-il ?",
+      "Quelles technologies maîtrise-t-il déjà ?"
+    ],
+    status: {
+      loading: "Initialisation du service RAG...",
+      ready: "Service RAG disponible",
+      degraded: "Service chargé, mais API LLM non configurée",
+      offline: "Service indisponible"
+    }
   },
   skills: [
     {

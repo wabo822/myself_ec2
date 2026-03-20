@@ -1,0 +1,15 @@
+[Unit]
+Description=Jiahan Wang Personal Site API
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/myself_ec2
+EnvironmentFile=/home/ec2-user/myself_ec2/backend/.env
+ExecStart=/home/ec2-user/myself_ec2/.venv/bin/uvicorn backend.app:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

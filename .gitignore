@@ -1,3 +1,7 @@
 .DS_Store
 *.log
 resume-page-*.png
+.venv/
+backend/.env
+__pycache__/
+.pytest_cache/

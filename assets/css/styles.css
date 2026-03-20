@@ -72,6 +72,18 @@ a {
   z-index: 30;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .skip-link:focus {
   top: 16px;
 }
@@ -452,6 +464,206 @@ a {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.assistant-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.7fr) minmax(0, 1.3fr);
+  gap: 22px;
+}
+
+.assistant-info,
+.assistant-chat {
+  padding: 28px;
+}
+
+.assistant-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.assistant-status.is-ready {
+  color: var(--accent-strong);
+  background: rgba(137, 240, 199, 0.1);
+}
+
+.assistant-status.is-degraded {
+  color: #ffd27d;
+  background: rgba(255, 210, 125, 0.1);
+}
+
+.assistant-status.is-offline {
+  color: #ff9696;
+  background: rgba(255, 150, 150, 0.12);
+}
+
+.assistant-info h3,
+.chat-title {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.assistant-description {
+  margin: 14px 0 0;
+  color: var(--muted);
+}
+
+.prompt-tag {
+  cursor: pointer;
+  color: var(--text);
+}
+
+.prompt-tag:hover,
+.prompt-tag:focus-visible {
+  border-color: rgba(120, 215, 255, 0.32);
+  background: rgba(120, 215, 255, 0.08);
+}
+
+.chat-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.chat-label {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.chat-clear {
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  padding: 10px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.chat-log {
+  display: grid;
+  gap: 14px;
+  min-height: 300px;
+  max-height: 480px;
+  margin-top: 24px;
+  padding-right: 4px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  max-width: min(92%, 720px);
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chat-message.user {
+  justify-self: end;
+  background: rgba(120, 215, 255, 0.11);
+}
+
+.chat-message.assistant {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.chat-role {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.chat-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.source-panel {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.source-title {
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.source-list {
+  display: grid;
+  gap: 12px;
+}
+
+.source-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.source-card-title {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.source-card-snippet,
+.source-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.chat-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.chat-form textarea {
+  width: 100%;
+  min-height: 128px;
+  resize: vertical;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font: inherit;
+}
+
+.chat-form textarea:focus {
+  outline: 1px solid rgba(120, 215, 255, 0.35);
+  border-color: rgba(120, 215, 255, 0.35);
+}
+
+.chat-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.chat-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+
 .skill-card,
 .project-card,
 .timeline-card {
@@ -607,6 +819,7 @@ a {
 @media (max-width: 980px) {
   .hero,
   .about-layout,
+  .assistant-layout,
   .contact-panel,
   .journey-grid,
   .projects-grid {
@@ -657,6 +870,8 @@ a {
   .hero-copy,
   .hero-panel,
   .about-copy,
+  .assistant-info,
+  .assistant-chat,
   .skill-card,
   .project-card,
   .timeline-card,
@@ -671,6 +886,16 @@ a {
 
   .panel-grid {
     grid-template-columns: 1fr;
+  }
+
+  .chat-topbar,
+  .chat-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chat-message {
+    max-width: 100%;
   }
 }
 
