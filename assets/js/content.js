@@ -10,8 +10,8 @@ window.siteContent = {
     emailLabel: "jiahan.wang@eleve.isep.fr",
     github: "https://github.com/wabo822",
     githubLabel: "github.com/wabo822",
-    linkedin: "https://www.linkedin.com/in/votre-profil/",
-    linkedinLabel: "linkedin.com/in/votre-profil",
+    linkedin: "https://www.linkedin.com/in/jiahan-wang-a05038236/?locale=fr_FR",
+    linkedinLabel: "linkedin.com/in/jiahan-wang-a05038236",
     heroActions: [
       { label: "Voir les projets", href: "#projects", variant: "primary" },
       { label: "Poser une question", href: "#assistant", variant: "secondary" },
@@ -219,8 +219,9 @@ window.siteContent = {
     },
     {
       label: "LinkedIn",
-      value: "Profil LinkedIn à ajouter",
-      note: "Placeholder à remplacer avant la mise en ligne finale."
+      value: "linkedin.com/in/jiahan-wang-a05038236",
+      href: "https://www.linkedin.com/in/jiahan-wang-a05038236/?locale=fr_FR",
+      note: "Profil professionnel et parcours."
     }
   ]
 };

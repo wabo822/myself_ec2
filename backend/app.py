@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 from typing import Literal
 
@@ -93,6 +94,12 @@ def _build_headers() -> dict[str, str]:
     return headers
 
 
+def _clean_answer_content(content: str) -> str:
+    # MiniMax OpenAI-compatible responses may include reasoning inside <think> tags.
+    cleaned = re.sub(r"<think>.*?</think>\s*", "", content, flags=re.DOTALL).strip()
+    return cleaned or content.strip()
+
+
 async def generate_answer(question: str, history: list[ChatMessage], context: str) -> str:
     chat_url = _build_chat_url()
     if not chat_url:
@@ -131,6 +138,7 @@ async def generate_answer(question: str, history: list[ChatMessage], context: st
         "model": model,
         "messages": messages,
         "temperature": 0.2,
+        "reasoning_split": True,
     }
 
     timeout = float(os.getenv("LLM_REQUEST_TIMEOUT", "60"))
@@ -146,7 +154,7 @@ async def generate_answer(question: str, history: list[ChatMessage], context: st
     if not choices:
         raise HTTPException(status_code=502, detail="LLM API 返回内容为空。")
 
-    answer = choices[0].get("message", {}).get("content", "").strip()
+    answer = _clean_answer_content(choices[0].get("message", {}).get("content", ""))
     if not answer:
         raise HTTPException(status_code=502, detail="LLM API 返回了空答案。")
 

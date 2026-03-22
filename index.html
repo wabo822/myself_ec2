@@ -18,7 +18,7 @@
     <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20260321-portrait-tune" />
   </head>
   <body>
     <a class="skip-link" href="#main">Aller au contenu</a>
@@ -43,10 +43,10 @@
         </button>
 
         <nav class="site-nav" id="site-nav" aria-label="Navigation principale">
+          <a href="#assistant">AI</a>
           <a href="#about">À propos</a>
           <a href="#skills">Compétences</a>
           <a href="#projects">Projets</a>
-          <a href="#assistant">AI</a>
           <a href="#journey">Parcours</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -64,43 +64,25 @@
             <ul class="signal-list" id="hero-signals" aria-label="Faits saillants"></ul>
           </div>
 
-          <aside class="hero-panel reveal" aria-label="Statut et focus">
-            <div class="panel-label">Statut / Focus</div>
-            <h2 data-panel-title></h2>
-            <p class="panel-copy" data-panel-copy></p>
+          <aside class="hero-panel reveal" aria-label="Portrait, statut et focus">
+            <div class="hero-panel-head">
+              <div class="hero-portrait-frame">
+                <img
+                  class="hero-portrait"
+                  src="assets/images/jiahan-wang-portrait.jpeg?v=20260321-portrait-tune"
+                  alt="Portrait de Jiahan Wang"
+                />
+              </div>
+
+              <div class="hero-panel-copy">
+                <div class="panel-label">Statut / Focus</div>
+                <h2 data-panel-title></h2>
+                <p class="panel-copy" data-panel-copy></p>
+              </div>
+            </div>
 
             <div class="panel-grid" id="panel-items"></div>
           </aside>
-        </section>
-
-        <section class="section" id="about">
-          <div class="section-heading reveal">
-            <p class="section-kicker">À propos</p>
-            <h2>Un profil d&apos;ingénieur en construction, avec une logique produit très concrète.</h2>
-          </div>
-
-          <div class="about-layout">
-            <div class="about-copy card reveal" id="about-copy"></div>
-            <div class="metrics-grid" id="metrics-grid"></div>
-          </div>
-        </section>
-
-        <section class="section" id="skills">
-          <div class="section-heading reveal">
-            <p class="section-kicker">Compétences</p>
-            <h2>Des bases solides en logiciel, IA appliquée et systèmes embarqués.</h2>
-          </div>
-
-          <div class="skills-grid" id="skills-grid"></div>
-        </section>
-
-        <section class="section" id="projects">
-          <div class="section-heading reveal">
-            <p class="section-kicker">Projets</p>
-            <h2>Des projets construits pour être utiles, mesurables et testables.</h2>
-          </div>
-
-          <div class="projects-grid" id="projects-grid"></div>
         </section>
 
         <section class="section" id="assistant">
@@ -152,6 +134,36 @@
           </div>
         </section>
 
+        <section class="section" id="about">
+          <div class="section-heading reveal">
+            <p class="section-kicker">À propos</p>
+            <h2>Un profil d&apos;ingénieur en construction, avec une logique produit très concrète.</h2>
+          </div>
+
+          <div class="about-layout">
+            <div class="about-copy card reveal" id="about-copy"></div>
+            <div class="metrics-grid" id="metrics-grid"></div>
+          </div>
+        </section>
+
+        <section class="section" id="skills">
+          <div class="section-heading reveal">
+            <p class="section-kicker">Compétences</p>
+            <h2>Des bases solides en logiciel, IA appliquée et systèmes embarqués.</h2>
+          </div>
+
+          <div class="skills-grid" id="skills-grid"></div>
+        </section>
+
+        <section class="section" id="projects">
+          <div class="section-heading reveal">
+            <p class="section-kicker">Projets</p>
+            <h2>Des projets construits pour être utiles, mesurables et testables.</h2>
+          </div>
+
+          <div class="projects-grid" id="projects-grid"></div>
+        </section>
+
         <section class="section" id="journey">
           <div class="section-heading reveal">
             <p class="section-kicker">Formation & Expérience</p>
@@ -201,7 +213,7 @@
       </footer>
     </div>
 
-    <script src="assets/js/content.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/content.js?v=20260321-portrait-tune"></script>
+    <script src="assets/js/main.js?v=20260321-portrait-tune"></script>
   </body>
 </html>
