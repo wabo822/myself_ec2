@@ -3,6 +3,7 @@
 ## Identity
 
 - Name: Jiahan Wang
+- Chinese name: 王稼瀚
 - Base: Paris, France
 - Email: jiahan.wang@eleve.isep.fr
 - Current positioning: student engineer focused on applied AI, RAG, embedded vision, IoT, and software systems

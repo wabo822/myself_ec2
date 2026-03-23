@@ -9,14 +9,36 @@ import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from backend.rag import KnowledgeBase
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = ROOT_DIR / "backend" / ".env"
+FRONTEND_DIST_DIR = ROOT_DIR / "frontend" / "dist"
 load_dotenv(ENV_PATH)
+
+FRONTEND_META = {
+    False: {
+        "lang": "fr",
+        "title": "Jiahan Wang | AI & Embedded Systems Builder",
+        "description": (
+            "Portfolio personnel de Jiahan Wang, étudiant ingénieur à Paris, entre "
+            "intelligence artificielle, RAG, vision embarquée et systèmes connectés."
+        ),
+        "robots": "index,follow",
+    },
+    True: {
+        "lang": "zh-CN",
+        "title": "王稼瀚 | 中文问答入口",
+        "description": (
+            "王稼瀚的中文问答入口，可以直接用中文提问他的项目经历、RAG、嵌入式系统、技能和求职方向。"
+        ),
+        "robots": "noindex, nofollow",
+    },
+}
 
 
 def _build_chat_url() -> str:
@@ -27,9 +49,9 @@ def _build_chat_url() -> str:
     base = os.getenv("LLM_API_BASE_URL", "").strip().rstrip("/")
     path = os.getenv("LLM_API_PATH", "/chat/completions").strip()
     if not base:
-      return ""
+        return ""
     if not path.startswith("/"):
-      path = f"/{path}"
+        path = f"/{path}"
     return f"{base}{path}"
 
 
@@ -61,6 +83,11 @@ app.add_middleware(
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+app.mount(
+    "/app",
+    StaticFiles(directory=FRONTEND_DIST_DIR / "app", check_dir=False),
+    name="frontend-app",
 )
 
 knowledge_base = KnowledgeBase(
@@ -161,6 +188,40 @@ async def generate_answer(question: str, history: list[ChatMessage], context: st
     return answer
 
 
+def _frontend_entrypoint(is_chinese: bool = False) -> Path:
+    dist_index = FRONTEND_DIST_DIR / "index.html"
+    if dist_index.exists():
+        return dist_index
+
+    fallback = ROOT_DIR / "zh" / "index.html" if is_chinese else ROOT_DIR / "index.html"
+    return fallback
+
+
+def _render_frontend_html(is_chinese: bool = False) -> HTMLResponse | FileResponse:
+    entrypoint = _frontend_entrypoint(is_chinese=is_chinese)
+    if entrypoint.parent != FRONTEND_DIST_DIR:
+        return FileResponse(entrypoint)
+
+    html = entrypoint.read_text(encoding="utf-8")
+    meta = FRONTEND_META[is_chinese]
+
+    html = re.sub(r'<html lang="[^"]+">', f'<html lang="{meta["lang"]}">', html, count=1)
+    html = re.sub(r"<title>.*?</title>", f"<title>{meta['title']}</title>", html, count=1, flags=re.DOTALL)
+    html = re.sub(
+        r'(<meta\s+name="description"\s+content=")([^"]*)(")',
+        lambda match: f'{match.group(1)}{meta["description"]}{match.group(3)}',
+        html,
+        count=1,
+    )
+    html = re.sub(
+        r'(<meta\s+name="robots"\s+content=")([^"]*)(")',
+        lambda match: f'{match.group(1)}{meta["robots"]}{match.group(3)}',
+        html,
+        count=1,
+    )
+    return HTMLResponse(content=html)
+
+
 @app.get("/api/health")
 async def health() -> dict[str, object]:
     return {
@@ -196,8 +257,17 @@ async def chat(payload: ChatRequest) -> ChatResponse:
 
 
 @app.get("/", include_in_schema=False)
-async def homepage() -> FileResponse:
-    return FileResponse(ROOT_DIR / "index.html")
+async def homepage():
+    return _render_frontend_html()
+
+
+@app.get("/zh", include_in_schema=False)
+@app.get("/zh/", include_in_schema=False)
+@app.get("/zh/index.html", include_in_schema=False)
+@app.get("/zh.com", include_in_schema=False)
+@app.get("/zh.com/", include_in_schema=False)
+async def homepage_zh():
+    return _render_frontend_html(is_chinese=True)
 
 
 @app.get("/cv_mars2026.pdf", include_in_schema=False)

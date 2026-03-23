@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>王稼瀚 | 中文问答入口</title>
+    <meta
+      name="description"
+      content="王稼瀚的中文问答入口，可以直接用中文提问他的项目经历、RAG、嵌入式系统、技能和求职方向。"
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b0f17" />
+    <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=20260323-zh" />
+    <style>
+      .zh-shell {
+        width: min(calc(100% - 32px), 1080px);
+        margin: 0 auto;
+        padding: 28px 0 72px;
+      }
+
+      .zh-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 22px;
+        padding: 18px 22px;
+        border-radius: 28px;
+      }
+
+      .zh-topbar p,
+      .zh-topbar strong,
+      .zh-intro p,
+      .zh-intro h1,
+      .zh-intro h2 {
+        margin: 0;
+      }
+
+      .zh-topbar-copy {
+        display: grid;
+        gap: 6px;
+      }
+
+      .zh-back-link {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .zh-intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 24px;
+        align-items: stretch;
+      }
+
+      .zh-intro-card,
+      .zh-assistant-card {
+        padding: 30px;
+        border-radius: 30px;
+      }
+
+      .zh-intro-card {
+        display: grid;
+        gap: 18px;
+      }
+
+      .zh-intro-card h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(2.6rem, 6vw, 4.8rem);
+        line-height: 0.98;
+      }
+
+      .zh-intro-card p {
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
+      .zh-intro-points {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .zh-assistant-card {
+        display: grid;
+        gap: 18px;
+      }
+
+      .zh-assistant-card h2 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(1.6rem, 3vw, 2.35rem);
+        line-height: 1.05;
+      }
+
+      .zh-assistant-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .zh-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .zh-side,
+      .zh-chat {
+        padding: 28px;
+        border-radius: 28px;
+      }
+
+      .zh-side {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+
+      .zh-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .zh-status.is-ready {
+        color: #031016;
+        background: linear-gradient(135deg, var(--accent-strong), var(--accent));
+        border-color: transparent;
+      }
+
+      .zh-status.is-degraded,
+      .zh-status.is-offline {
+        color: #ffd4d4;
+        background: rgba(255, 120, 120, 0.12);
+        border-color: rgba(255, 120, 120, 0.24);
+      }
+
+      .zh-side h3 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.35rem;
+      }
+
+      .zh-side ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      .zh-prompt-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .zh-prompt-grid button {
+        cursor: pointer;
+      }
+
+      .zh-chat .chat-topbar {
+        margin-bottom: 18px;
+      }
+
+      .zh-chat textarea::placeholder {
+        color: rgba(154, 166, 191, 0.8);
+      }
+
+      .zh-source-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      @media (max-width: 980px) {
+        .zh-intro,
+        .zh-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .zh-shell {
+          width: min(calc(100% - 20px), 1080px);
+          padding-top: 20px;
+        }
+
+        .zh-topbar,
+        .zh-intro-card,
+        .zh-assistant-card,
+        .zh-side,
+        .zh-chat {
+          padding: 22px;
+        }
+
+        .zh-topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="zh-shell">
+      <header class="card zh-topbar">
+        <div class="zh-topbar-copy">
+          <p class="section-kicker">中文入口</p>
+          <strong>王稼瀚中文问答页</strong>
+        </div>
+        <a class="zh-back-link" href="/">返回主站</a>
+      </header>
+
+      <main>
+        <section class="zh-intro">
+          <div class="card zh-intro-card">
+            <p class="section-kicker">中文 RAG 问答</p>
+            <h1>直接用中文问我项目、经历、技能和求职方向。</h1>
+            <p>
+              这是一个不在首页导航中展示的中文入口。你可以直接问我和王稼瀚相关的问题，
+              比如 RAG、嵌入式视觉、教育背景、实习经历，或者他的 alternance 目标。
+            </p>
+            <div class="zh-intro-points">
+              <span class="tag">中文提问</span>
+              <span class="tag">基于现有知识库回答</span>
+              <span class="tag">会附带检索来源</span>
+            </div>
+          </div>
+
+          <aside class="card zh-assistant-card">
+            <p class="section-kicker">使用方式</p>
+            <h2>把它当成一个中文入口页，而不是完整中文版主页。</h2>
+            <p>
+              页面不在主站前台露出，但接口和知识库是同一套。适合你单独发给中文读者，
+              或者放在你自己手里备用。
+            </p>
+          </aside>
+        </section>
+
+        <section class="zh-layout">
+          <aside class="card zh-side">
+            <p class="zh-status" id="zh-status">正在检查服务状态...</p>
+            <div>
+              <p class="section-kicker">可以问什么</p>
+              <h3>推荐提问方向</h3>
+            </div>
+            <ul>
+              <li>他做过哪些 RAG 项目？</li>
+              <li>他在嵌入式视觉上有什么经验？</li>
+              <li>他现在在找什么样的 alternance？</li>
+              <li>他掌握了哪些技术栈？</li>
+            </ul>
+            <div class="zh-prompt-grid" id="zh-prompts"></div>
+          </aside>
+
+          <div class="card zh-chat">
+            <div class="chat-topbar">
+              <div>
+                <p class="chat-label">中文助手</p>
+                <strong class="chat-title">围绕王稼瀚的项目、经历、技能和目标进行问答</strong>
+              </div>
+              <button class="chat-clear" id="zh-chat-clear" type="button">清空</button>
+            </div>
+
+            <div class="chat-log" id="zh-chat-log" aria-live="polite"></div>
+
+            <div class="source-panel">
+              <p class="source-title">检索来源</p>
+              <p class="zh-source-note">回答会尽量只基于当前知识库，不确定时会明确说明。</p>
+              <div class="source-list" id="zh-source-list"></div>
+            </div>
+
+            <form class="chat-form" id="zh-chat-form">
+              <label class="chat-label sr-only" for="zh-chat-input">你的问题</label>
+              <textarea
+                id="zh-chat-input"
+                name="question"
+                rows="4"
+                maxlength="800"
+                placeholder="例如：他在 RAG 和嵌入式系统上分别做过什么？"
+                required
+              ></textarea>
+              <div class="chat-actions">
+                <p class="chat-hint" id="zh-chat-hint">建议直接用中文提问，回答会更自然。</p>
+                <button class="btn btn-primary" id="zh-chat-submit" type="submit">发送</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/assets/js/zh-rag.js?v=20260323-name"></script>
+  </body>
+</html>

@@ -25,11 +25,19 @@ ssh "${EC2_USER}@${EC2_HOST}" \
   "SERVER_NAME='${SERVER_NAME}' REMOTE_APP_DIR='${REMOTE_APP_DIR}' bash -s" <<'EOF'
 set -euo pipefail
 
-sudo dnf install -y nginx rsync python3 python3-pip
+sudo dnf install -y nginx rsync python3 python3-pip nodejs
 cd "${REMOTE_APP_DIR}"
 python3 -m venv .venv
 .venv/bin/pip install --upgrade pip
 .venv/bin/pip install -r backend/requirements.txt
+
+if [[ -f frontend/package-lock.json ]]; then
+  (cd frontend && npm ci)
+else
+  (cd frontend && npm install)
+fi
+
+(cd frontend && npm run build)
 
 if [[ ! -f backend/.env ]]; then
   cp backend/.env.example backend/.env

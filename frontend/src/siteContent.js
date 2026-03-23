@@ -1,0 +1,322 @@
+export const chinesePaths = new Set([
+  "/zh",
+  "/zh/",
+  "/zh/index.html",
+  "/zh.com",
+  "/zh.com/"
+]);
+
+export const siteContent = {
+  meta: {
+    title: "Jiahan Wang | AI & Embedded Systems Builder",
+    description:
+      "Portfolio personnel de Jiahan Wang, étudiant ingénieur à Paris, entre intelligence artificielle, RAG, vision embarquée et systèmes connectés.",
+    lang: "fr",
+    robots: "index,follow"
+  },
+  navigation: [
+    { label: "AI", href: "#assistant" },
+    { label: "À propos", href: "#about" },
+    { label: "Compétences", href: "#skills" },
+    { label: "Projets", href: "#projects" },
+    { label: "Parcours", href: "#journey" },
+    { label: "Contact", href: "#contact" }
+  ],
+  person: {
+    name: "Jiahan Wang",
+    kicker: "Paris • Étudiant ingénieur • IA appliquée • Systèmes embarqués",
+    title: "Je construis des systèmes fiables entre IA appliquée, vision embarquée et hardware connecté.",
+    lead:
+      "Formé entre Shanghai, Lyon et Paris, je travaille sur des sujets concrets : RAG sur corpus métier, vision embarquée sur Raspberry Pi, télémétrie ESP32 et logiciels techniques pensés pour le terrain. Je recherche une alternance de 3 ans en intelligence artificielle ou ingénierie des données à partir de septembre 2026.",
+    resumeUrl: "/cv_mars2026.pdf",
+    email: "mailto:jiahan.wang@eleve.isep.fr",
+    emailLabel: "jiahan.wang@eleve.isep.fr",
+    github: "https://github.com/wabo822",
+    githubLabel: "github.com/wabo822",
+    linkedin: "https://www.linkedin.com/in/jiahan-wang-a05038236/?locale=fr_FR",
+    linkedinLabel: "linkedin.com/in/jiahan-wang-a05038236",
+    portraitSrc: "/assets/images/jiahan-wang-portrait.jpeg?v=20260321-portrait-tune",
+    heroActions: [
+      { label: "Voir les projets", href: "#projects", variant: "primary" },
+      { label: "Poser une question", href: "#assistant", variant: "secondary" },
+      { label: "Voir le CV", href: "/cv_mars2026.pdf", variant: "ghost", external: true }
+    ],
+    heroSignals: [
+      "25k documents structurés en RAG",
+      "+14 pts de Hit@1 sur un moteur de recherche interne",
+      "18 FPS en vision embarquée sur Raspberry Pi 5"
+    ],
+    panel: {
+      title: "Disponible pour une alternance longue en IA / data dès septembre 2026.",
+      copy:
+        "Profil orienté exécution, avec un vrai goût pour les systèmes qu'on peut évaluer, déployer et améliorer rapidement.",
+      items: [
+        { label: "Base", value: "Paris, France" },
+        { label: "Formation", value: "ISEP + INSA Lyon" },
+        { label: "Focus", value: "RAG, vision, IoT, data" },
+        { label: "Style", value: "Builder, rigoureux, international" }
+      ]
+    },
+    about: [
+      "Mon parcours me donne une double lecture : une base scientifique exigeante, puis une montée en puissance vers l'intelligence artificielle, la data et les systèmes embarqués. Après un passage par l'INSA Lyon, j'étudie aujourd'hui à l'ISEP avec l'envie d'évoluer dans des environnements où l'on conçoit, teste et déploie vraiment.",
+      "J'aime les projets où l'intelligence logicielle rencontre les contraintes du réel : indexer des milliers de documents pour un moteur RAG utile, entraîner un modèle léger pour un robot mobile, faire remonter de la télémétrie en temps réel depuis un ESP32, ou transformer une idée technique en prototype crédible.",
+      "Ce que je cherche maintenant, c'est une équipe exigeante, internationale et rapide, où je peux apprendre vite, livrer proprement et participer à la construction de produits techniques avec une vraie ambition."
+    ],
+    metrics: [
+      {
+        value: "25k",
+        label: "documents traités dans un pipeline RAG d'entreprise"
+      },
+      {
+        value: "61%",
+        label: "Hit@1 atteint après re-ranking cross-encoder"
+      },
+      {
+        value: "18 FPS",
+        label: "inférence temps réel sur robot mobile embarqué"
+      }
+    ]
+  },
+  assistant: {
+    title: "Un assistant connecté à un RAG local, centré sur mon CV et mon profil technique.",
+    description:
+      "La base de connaissances indexe pour l'instant mon CV converti en base textuelle, avec une structure pensée pour accueillir ensuite d'autres projets, notes techniques ou publications. L'embedding est local, gratuit et volontairement léger pour tenir sur une petite machine ; seul le LLM de génération se branche sur votre API.",
+    hint:
+      "Le service répond dans la langue de la question et cite les passages récupérés par le RAG.",
+    welcome:
+      "Bonjour. Vous pouvez me poser une question sur mes projets IA, mon expérience en RAG, mes systèmes embarqués, mon parcours ISEP / INSA ou mon objectif d'alternance.",
+    prompts: [
+      "Quelle expérience a-t-il déjà en RAG ?",
+      "Quels projets embarqués a-t-il construits ?",
+      "Quel type d'alternance recherche-t-il ?",
+      "Quelles technologies maîtrise-t-il déjà ?"
+    ],
+    status: {
+      loading: "Initialisation du service RAG...",
+      ready: "Service RAG disponible",
+      degraded: "Service chargé, mais API LLM non configurée",
+      offline: "Service indisponible"
+    },
+    chunkLabel: "chunks",
+    submitLabel: "Envoyer",
+    sendingLabel: "Envoi...",
+    clearLabel: "Réinitialiser",
+    chatLabel: "Ask My AI",
+    chatTitle: "Questions sur mes projets, compétences, parcours ou disponibilités.",
+    placeholder:
+      "Exemple : Quelle expérience a-t-il déjà en RAG et en systèmes embarqués ?",
+    emptySources: "Aucune source affichée pour le moment.",
+    fallbackError: "Le service RAG n'est pas encore disponible."
+  },
+  skills: [
+    {
+      group: "Programming",
+      description: "Des outils solides pour prototyper vite et structurer proprement.",
+      items: ["Python", "C++", "SQL", "Algorithmique", "Analyse de données"]
+    },
+    {
+      group: "AI / Data / LLM",
+      description: "IA appliquée, retrieval, évaluation et vision par ordinateur.",
+      items: ["PyTorch", "LangChain", "FAISS", "OpenCV", "RAG", "Cross-Encoder", "YOLO"]
+    },
+    {
+      group: "Embedded / IoT",
+      description: "Du capteur au prototype temps réel, avec une logique système.",
+      items: ["ESP32", "Raspberry Pi 5", "MQTT", "HTTP", "TCP/IP", "Capteurs", "Télémétrie"]
+    },
+    {
+      group: "Tools",
+      description: "Un environnement d'ingénierie pratique, orienté production et itération.",
+      items: [
+        "Git",
+        "Docker",
+        "Linux",
+        "Arduino IDE",
+        "SolidEdge",
+        "LabelImg",
+        "Excel",
+        "Claude Code / Cursor / Codex"
+      ]
+    },
+    {
+      group: "Languages",
+      description: "À l'aise dans des contextes multiculturels et techniques.",
+      items: ["Chinois (natif)", "Français (B2-C1)", "Anglais (B2)"]
+    }
+  ],
+  projects: [
+    {
+      name: "Pipeline RAG pour documentation d'entreprise",
+      period: "06/2025 - 08/2025",
+      summary:
+        "Améliorer la récupération d'information sur un corpus interne volumineux et préparer un service RAG exploitable.",
+      problem:
+        "Le besoin était de retrouver vite les bonnes informations dans environ 25k documents, avec un niveau de fiabilité suffisant pour un usage interne.",
+      role:
+        "J'ai prototypé le pipeline LangChain + FAISS, évalué un reranker cross-encoder, structuré les mesures, et participé à la conception d'un PoC de service RAG local conteneurisé. J'ai aussi exploré un module vision-RAG pour tableaux et images.",
+      stack: ["Python", "LangChain", "FAISS", "Cross-Encoder", "Docker", "Firecrawl"],
+      outcome:
+        "Passage de 47% à 61% en Hit@1, Hit@5 autour de 82%, MRR proche de 0,48 sur environ 180k passages."
+    },
+    {
+      name: "Vision embarquée pour robot mobile",
+      period: "02/2026 - 04/2026",
+      summary:
+        "Construire une détection d'objets embarquée, assez légère pour fonctionner en temps réel sur un robot.",
+      problem:
+        "Le projet demandait un système de perception capable d'aider la navigation d'un robot mobile, avec des contraintes réelles de latence et de puissance.",
+      role:
+        "J'ai préparé et annoté un jeu de données personnalisé, entraîné un modèle YOLO léger, puis intégré l'inférence avec OpenCV sur Raspberry Pi 5.",
+      stack: ["Raspberry Pi 5", "OpenCV", "YOLO", "LabelImg", "Python"],
+      outcome:
+        "Environ 1200 images annotées, mAP@0.5:0.95 = 0,82 et inférence temps réel autour de 18 FPS."
+    },
+    {
+      name: "Fusée à eau intelligente",
+      period: "02/2025 - 06/2025",
+      summary:
+        "Instrumenter une fusée à eau avec de la télémétrie temps réel et une logique de simulation.",
+      problem:
+        "L'objectif était de mesurer le comportement du système en vol, puis de confronter les données capteurs à une trajectoire simulée.",
+      role:
+        "J'ai développé la chaîne de télémétrie via ESP32 en C++, intégré un capteur barométrique et un accéléromètre, réalisé la simulation de trajectoire en Python et la modélisation 3D sous SolidEdge.",
+      stack: ["ESP32", "C++", "Python", "Capteurs", "SolidEdge"],
+      outcome:
+        "Un prototype complet, combinant acquisition temps réel, simulation physique et conception mécanique."
+    }
+  ],
+  timeline: {
+    education: [
+      {
+        title: "Institut Supérieur d'Électronique de Paris (ISEP)",
+        meta: "09/2025 - 06/2029 • Paris",
+        details: [
+          "Cycle ingénieur avec spécialisation visée en intelligence artificielle.",
+          "Cours suivis : circuits numériques, robotique, télécommunications, algorithmique, signaux et systèmes.",
+          "Résultats marquants : 17,5/20 en physique et 19,4/20 en mathématiques."
+        ]
+      },
+      {
+        title: "INSA Lyon",
+        meta: "08/2023 - 06/2025 • Lyon",
+        details: [
+          "Formation scientifique en mathématiques, physique, informatique et chimie.",
+          "Cours principaux : analyse, algèbre linéaire, physique générale, thermodynamique."
+        ]
+      },
+      {
+        title: "Lycée Guangming de Shanghai",
+        meta: "09/2020 - 06/2023 • Shanghai",
+        details: [
+          "Cours de mathématiques et de physique dispensés en français par des professeurs natifs."
+        ]
+      }
+    ],
+    experience: [
+      {
+        title: "Hande (Shanghai) — Stagiaire Ingénieur R&D IA",
+        meta: "06/2025 - 08/2025",
+        details: [
+          "Prototypage d'un pipeline RAG sur environ 25k documents et 180k passages.",
+          "Évaluation d'un reranker cross-encoder avec gain net sur les métriques de retrieval.",
+          "Exploration vision-RAG pour tableaux et images, puis participation à un PoC de service interne dockerisé."
+        ]
+      },
+      {
+        title: "Cirroparcel (Lyon) — Stagiaire",
+        meta: "07/2024 - 08/2024",
+        details: [
+          "Gestion opérationnelle d'un flux logistique e-commerce international.",
+          "Coordination terrain avec les livreurs et suivi de la performance sous Excel.",
+          "Étude de marché sur la logistique e-commerce transfrontalière."
+        ]
+      },
+      {
+        title: "Enseignant de mathématiques en ligne — Freelance",
+        meta: "09/2023 - présent",
+        details: [
+          "Préparation aux concours d'ingénieurs pour des élèves chinois.",
+          "5 élèves admis, dont 4 à l'INSA Lyon."
+        ]
+      }
+    ]
+  },
+  contact: [
+    {
+      label: "Email",
+      value: "jiahan.wang@eleve.isep.fr",
+      href: "mailto:jiahan.wang@eleve.isep.fr",
+      note: "Canal principal pour les échanges."
+    },
+    {
+      label: "GitHub",
+      value: "github.com/wabo822",
+      href: "https://github.com/wabo822",
+      note: "Code, projets et expérimentations."
+    },
+    {
+      label: "LinkedIn",
+      value: "linkedin.com/in/jiahan-wang-a05038236",
+      href: "https://www.linkedin.com/in/jiahan-wang-a05038236/?locale=fr_FR",
+      note: "Profil professionnel et parcours."
+    }
+  ]
+};
+
+export const zhPageContent = {
+  meta: {
+    title: "王稼瀚 | 中文问答入口",
+    description:
+      "王稼瀚的中文问答入口，可以直接用中文提问他的项目经历、RAG、嵌入式系统、技能和求职方向。",
+    lang: "zh-CN",
+    robots: "noindex, nofollow"
+  },
+  topbarKicker: "中文入口",
+  topbarTitle: "王稼瀚中文问答页",
+  backLabel: "返回主站",
+  introKicker: "中文 RAG 问答",
+  introTitle: "直接用中文问我项目、经历、技能和求职方向。",
+  introCopy:
+    "这是一个不在首页导航中展示的中文入口。你可以直接问我和王稼瀚相关的问题，比如 RAG、嵌入式视觉、教育背景、实习经历，或者他的 alternance 目标。",
+  introTags: ["中文提问", "基于现有知识库回答", "会附带检索来源"],
+  sideKicker: "可以问什么",
+  sideTitle: "推荐提问方向",
+  sideQuestions: [
+    "他做过哪些 RAG 项目？",
+    "他在嵌入式视觉上有什么经验？",
+    "他现在在找什么样的 alternance？",
+    "他掌握了哪些技术栈？"
+  ],
+  usageKicker: "使用方式",
+  usageTitle: "把它当成一个中文入口页，而不是完整中文版主页。",
+  usageCopy:
+    "页面不在主站前台露出，但接口和知识库是同一套。适合你单独发给中文读者，或者放在你自己手里备用。",
+  assistant: {
+    status: {
+      loading: "正在检查服务状态...",
+      ready: "中文问答可用",
+      degraded: "知识库已加载，但 LLM 还没配置好",
+      offline: "服务暂时不可用"
+    },
+    chunkLabel: "个知识块",
+    welcome:
+      "你好，你可以直接用中文问我和王稼瀚有关的问题，例如项目经历、RAG、嵌入式系统、技能或求职方向。",
+    prompts: [
+      "他做过哪些 RAG 相关项目？",
+      "他在嵌入式视觉方向有什么经验？",
+      "他现在在找什么样的 alternance？",
+      "他掌握了哪些技术栈？"
+    ],
+    chatLabel: "中文助手",
+    chatTitle: "围绕王稼瀚的项目、经历、技能和目标进行问答",
+    clearLabel: "清空",
+    hint: "建议直接用中文提问，回答会更自然。",
+    sourceTitle: "检索来源",
+    sourceNote: "回答会尽量只基于当前知识库，不确定时会明确说明。",
+    emptySources: "暂时还没有显示来源。",
+    placeholder: "例如：他在 RAG 和嵌入式系统上分别做过什么？",
+    submitLabel: "发送",
+    sendingLabel: "发送中...",
+    fallbackError: "中文问答服务暂时不可用。"
+  }
+};

@@ -11,7 +11,7 @@
 
 技术栈：
 
-- 前端：HTML + CSS + JavaScript
+- 前端：React + Vite
 - 后端：FastAPI
 - RAG 检索：`fastembed + ONNX`
 - 向量检索：本地内存余弦相似度
@@ -33,6 +33,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install -r backend/requirements.txt
+cd frontend
+npm install
+cd ..
 ```
 
 ### 第二步：配置 LLM API
@@ -64,7 +67,15 @@ RAG_TOP_K=3
 LLM_CHAT_COMPLETIONS_URL=你的完整聊天接口 URL
 ```
 
-### 第三步：启动服务
+### 第三步：构建 React 前端
+
+```bash
+cd frontend
+npm run build
+cd ..
+```
+
+### 第四步：启动服务
 
 ```bash
 source .venv/bin/activate
@@ -81,9 +92,9 @@ http://localhost:8000
 
 ### 修改页面文案和展示内容
 
-- `assets/js/content.js`
-- `index.html`
-- `assets/css/styles.css`
+- `frontend/src/siteContent.js`
+- `frontend/src/App.jsx`
+- `frontend/src/styles.css`
 
 ### 修改 RAG 知识库
 
@@ -113,6 +124,7 @@ backend/knowledge/
 - `backend/app.py`：API、LLM 调用、静态页面服务
 - `backend/rag.py`：文档加载、切块、embedding、检索
 - `backend/.env.example`：配置模板
+- `frontend/`：React 前端源码和构建配置
 
 ## 4. 如何部署到 AWS EC2
 
@@ -128,6 +140,7 @@ Amazon Linux 上至少需要：
 
 - `python3`
 - `python3-pip`
+- `nodejs`
 - `nginx`
 - `git`
 
@@ -147,6 +160,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install -r backend/requirements.txt
+cd frontend
+npm install
+cd ..
 ```
 
 3. 配置环境变量
@@ -156,14 +172,22 @@ cp backend/.env.example backend/.env
 vim backend/.env
 ```
 
-4. 先本地起服务验证
+4. 构建 React 前端
+
+```bash
+cd frontend
+npm run build
+cd ..
+```
+
+5. 先本地起服务验证
 
 ```bash
 source .venv/bin/activate
 uvicorn backend.app:app --host 0.0.0.0 --port 8000
 ```
 
-5. 配置 systemd 和 nginx
+6. 配置 systemd 和 nginx
 
 项目里已经准备好了：
 
@@ -182,7 +206,7 @@ sudo systemctl enable --now nginx
 sudo systemctl reload nginx
 ```
 
-6. 浏览器访问
+7. 浏览器访问
 
 ```text
 http://你的EC2公网IP
@@ -238,14 +262,12 @@ git pull
 
 ```text
 .
-├── index.html
 ├── README.md
 ├── assets
 │   ├── css/styles.css
 │   ├── icons/favicon.svg
+│   ├── images
 │   └── js
-│       ├── content.js
-│       └── main.js
 ├── backend
 │   ├── .env.example
 │   ├── app.py
@@ -253,6 +275,11 @@ git pull
 │   │   └── jiahan_profile.md
 │   ├── rag.py
 │   └── requirements.txt
+├── frontend
+│   ├── index.html
+│   ├── package.json
+│   ├── src
+│   └── vite.config.js
 └── deploy
     ├── deploy-ec2.sh
     ├── nginx-personal-site.conf
