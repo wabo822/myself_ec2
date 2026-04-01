@@ -25,7 +25,7 @@ export const siteContent = {
   person: {
     name: "Jiahan Wang",
     kicker: "Paris • Étudiant ingénieur • IA appliquée • Systèmes embarqués",
-    title: "Je construis des systèmes fiables entre IA appliquée, vision embarquée et hardware connecté.",
+    title: "Je construis des systèmes fiables entre IA, vision embarquée et hardware connecté.",
     lead:
       "Formé entre Shanghai, Lyon et Paris, je travaille sur des sujets concrets : RAG sur corpus métier, vision embarquée sur Raspberry Pi, télémétrie ESP32 et logiciels techniques pensés pour le terrain. Je recherche une alternance de 3 ans en intelligence artificielle ou ingénierie des données à partir de septembre 2026.",
     resumeUrl: "/cv_mars2026.pdf",
@@ -43,8 +43,9 @@ export const siteContent = {
     ],
     heroSignals: [
       "25k documents structurés en RAG",
-      "+14 pts de Hit@1 sur un moteur de recherche interne",
-      "18 FPS en vision embarquée sur Raspberry Pi 5"
+      "+14 pts de Hit@1 sur moteur interne",
+      "18 FPS vision embarquée sur RPi 5",
+      "Portfolio avec assistant RAG intégré"
     ],
     panel: {
       title: "Disponible pour une alternance longue en IA / data dès septembre 2026.",
@@ -112,12 +113,12 @@ export const siteContent = {
     {
       group: "Programming",
       description: "Des outils solides pour prototyper vite et structurer proprement.",
-      items: ["Python", "C++", "SQL", "Algorithmique", "Analyse de données"]
+      items: ["Python", "C++", "JavaScript", "SQL", "React", "FastAPI"]
     },
     {
       group: "AI / Data / LLM",
       description: "IA appliquée, retrieval, évaluation et vision par ordinateur.",
-      items: ["PyTorch", "LangChain", "FAISS", "OpenCV", "RAG", "Cross-Encoder", "YOLO"]
+      items: ["PyTorch", "LangChain", "FAISS", "OpenCV", "RAG", "Cross-Encoder", "YOLO", "FastEmbed"]
     },
     {
       group: "Embedded / IoT",
@@ -131,11 +132,11 @@ export const siteContent = {
         "Git",
         "Docker",
         "Linux",
+        "Nginx",
         "Arduino IDE",
         "SolidEdge",
         "LabelImg",
-        "Excel",
-        "Claude Code / Cursor / Codex"
+        "Claude Code / Cursor"
       ]
     },
     {

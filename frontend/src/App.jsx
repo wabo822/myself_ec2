@@ -549,8 +549,8 @@ function PortfolioPage() {
 
         <footer className="site-footer">
           <p>
-            {new Date().getFullYear()} Jiahan Wang. Portfolio personnel avec assistant RAG, pensé
-            pour GitHub et un déploiement simple sur EC2.
+            &copy; {new Date().getFullYear()} Jiahan Wang &mdash; Portfolio avec assistant RAG
+            local, déployé sur AWS EC2.
           </p>
         </footer>
       </div>
