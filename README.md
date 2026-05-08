@@ -15,7 +15,7 @@
 - 后端：FastAPI
 - RAG 检索：`fastembed + ONNX`
 - 向量检索：本地内存余弦相似度
-- LLM：通过环境变量接入你的 API，默认按 OpenAI-compatible Chat Completions 接口处理
+- LLM：通过环境变量接入你的 API，默认已适配 Claude / Anthropic Messages API，同时兼容 OpenAI-compatible Chat Completions
 - 轻量优化：避免 `torch`，默认走更适合 micro 服务器的 embedding 运行时
 
 当前知识库内容：
@@ -46,25 +46,33 @@ cd ..
 cp backend/.env.example backend/.env
 ```
 
-然后编辑 `backend/.env`，至少填写：
+如果你现在用的是 Claude，`backend/.env.example` 已经是 Claude 默认配置。复制后至少确认：
 
 ```env
-LLM_API_BASE_URL=你的接口根地址
-LLM_MODEL=你的模型名
-LLM_API_KEY=你的 API Key
+LLM_PROVIDER=anthropic
+LLM_MESSAGES_URL=https://api.anthropic.com/v1/messages
+LLM_MODEL=claude-sonnet-4-20250514
+LLM_API_KEY=你的 Anthropic API Key
 ```
 
 可选的轻量参数：
 
 ```env
+LLM_MAX_TOKENS=1024
+LLM_TEMPERATURE=0.2
 EMBEDDING_THREADS=1
 RAG_TOP_K=3
 ```
 
-如果你的服务不是标准 OpenAI-compatible 路径，可以直接设置：
+如果你要继续接 OpenAI-compatible 服务，可以改成：
 
 ```env
+LLM_PROVIDER=openai_compatible
+LLM_API_BASE_URL=你的接口根地址
+LLM_API_PATH=/chat/completions
 LLM_CHAT_COMPLETIONS_URL=你的完整聊天接口 URL
+LLM_API_KEY_HEADER=Authorization
+LLM_API_KEY_PREFIX=Bearer
 ```
 
 ### 第三步：构建 React 前端
@@ -258,11 +266,115 @@ git pull
 
 然后重新安装依赖或重启服务即可。
 
-## 7. 目录结构
+## 7. CI/CD（自动化测试和部署）
+
+项目已经接入 GitHub Actions：每次 push / PR 都会自动跑测试，main 分支合并后会自动部署到 EC2。
+
+### 测试栈
+
+- **后端单元 / 集成测试**：`pytest`，位于 `backend/tests/`
+  - `test_rag.py`：知识库切块、向量归一化、文档加载
+  - `test_app_helpers.py`：LLM provider 解析、URL 构造、鉴权头、healthcheck 状态
+  - `test_app_endpoints.py`：FastAPI TestClient 集成测试（`/api/health`、`/api/chat`、静态路由）
+- **前端单元测试**：`Vitest` + `@testing-library/react`，位于 `frontend/src/__tests__/`
+- **端到端测试**：`Playwright`（Chromium），位于 `frontend/tests-e2e/`，跑在 `npm run preview` 打出来的真实构建产物上，用 `page.route` mock `/api/*`
+
+### 本地跑测试
+
+```bash
+# 后端
+.venv/bin/pip install -r backend/requirements-dev.txt
+.venv/bin/python -m pytest
+
+# 前端单元
+cd frontend
+npm install
+npm test
+
+# 前端 e2e（首次需要装 chromium，约 300MB）
+npm run test:e2e:install
+npm run build
+npm run test:e2e
+```
+
+### CI workflow
+
+`.github/workflows/ci.yml` 在 push / PR 时跑三个 job：
+
+1. `backend`：`pytest` + 覆盖率
+2. `frontend`：`vitest run` + `vite build`，把 `dist/` 上传成 artifact
+3. `e2e`：下载上一步的 `dist`，装 chromium，跑 Playwright
+
+三个 job 全绿之后，仅在 push 到 `main` 时触发 `deploy` job。
+
+### CD：自动部署到 EC2
+
+`deploy` job 会通过 SSH 连到 EC2，跑下面这套：
+
+```bash
+git fetch && git reset --hard origin/main
+.venv/bin/pip install -r backend/requirements.txt
+cd frontend && npm ci && npm run build && cd ..
+sudo systemctl restart personal-site.service
+curl http://127.0.0.1:8000/api/health   # 健康检查
+```
+
+也可以手动跑：`bash deploy/update-on-server.sh`
+
+### 启用 CD 前需要做的一次性配置
+
+#### a) 在服务器允许 ec2-user 无密码 sudo restart
+
+```bash
+echo 'ec2-user ALL=(root) NOPASSWD: /bin/systemctl restart personal-site.service, /bin/systemctl reload-or-restart personal-site-healthcheck.timer' | sudo tee /etc/sudoers.d/personal-site
+sudo chmod 440 /etc/sudoers.d/personal-site
+```
+
+#### b) 生成一对部署专用的 SSH key
+
+在你的本地（不要复用个人 key）：
+
+```bash
+ssh-keygen -t ed25519 -C "github-actions-deploy" -f ~/.ssh/myself_ec2_deploy -N ""
+ssh-copy-id -i ~/.ssh/myself_ec2_deploy.pub ec2-user@<EC2_HOST>
+```
+
+#### c) 在 GitHub 仓库设置里加 4 个 secret
+
+`Settings → Secrets and variables → Actions → New repository secret`：
+
+| Secret name | 值 |
+| --- | --- |
+| `EC2_HOST` | EC2 公网 IP 或域名 |
+| `EC2_USER` | `ec2-user` |
+| `EC2_SSH_KEY` | `~/.ssh/myself_ec2_deploy` 的私钥内容（整个文件） |
+| `EC2_PORT` | `22`（如果换了 SSH 端口才填） |
+
+#### d) ⚠️ 第一次 deploy 之前 —— 提交服务器上的本地改动
+
+CD 用的是 `git reset --hard origin/main`，会**清掉服务器上所有未提交的改动**。
+如果你曾经直接在 EC2 上改过文件（比如 `backend/.env` 之外的代码），先：
+
+```bash
+cd /home/ec2-user/myself_ec2
+git status              # 看清楚哪些动过
+git stash               # 或 commit + push
+```
+
+`backend/.env` 在 `.gitignore` 里，CD 不会动它，安全。
+
+### 触发部署
+
+- 自动：push 到 `main` → CI 全绿 → 自动 deploy
+- 手动：`Actions` 页面找到对应 workflow run，点 `Re-run jobs`
+
+## 8. 目录结构
 
 ```text
 .
 ├── README.md
+├── pytest.ini
+├── .github/workflows/ci.yml
 ├── assets
 │   ├── css/styles.css
 │   ├── icons/favicon.svg
@@ -271,17 +383,31 @@ git pull
 ├── backend
 │   ├── .env.example
 │   ├── app.py
+│   ├── healthcheck.py
 │   ├── knowledge
 │   │   └── jiahan_profile.md
 │   ├── rag.py
-│   └── requirements.txt
+│   ├── requirements.txt
+│   ├── requirements-dev.txt
+│   └── tests
+│       ├── conftest.py
+│       ├── test_app_endpoints.py
+│       ├── test_app_helpers.py
+│       └── test_rag.py
 ├── frontend
 │   ├── index.html
 │   ├── package.json
+│   ├── playwright.config.js
 │   ├── src
+│   │   ├── __tests__/App.test.jsx
+│   │   └── test/setup.js
+│   ├── tests-e2e/portfolio.spec.js
 │   └── vite.config.js
 └── deploy
     ├── deploy-ec2.sh
+    ├── update-on-server.sh
     ├── nginx-personal-site.conf
-    └── personal-site.service
+    ├── personal-site.service
+    ├── personal-site-healthcheck.service
+    └── personal-site-healthcheck.timer
 ```

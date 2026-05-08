@@ -3,7 +3,17 @@
 resume-page-*.png
 .venv/
 backend/.env
+backend/.env.*-backup-*
+backend/auth.json
+backend/data/
+backend/.healthcheck_state.json
+.claude/
 __pycache__/
 .pytest_cache/
 frontend/node_modules/
 frontend/dist/
+frontend/playwright-report/
+frontend/test-results/
+htmlcov/
+.coverage
+coverage.xml

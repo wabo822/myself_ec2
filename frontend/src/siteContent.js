@@ -20,7 +20,8 @@ export const siteContent = {
     { label: "Compétences", href: "#skills" },
     { label: "Projets", href: "#projects" },
     { label: "Parcours", href: "#journey" },
-    { label: "Contact", href: "#contact" }
+    { label: "Contact", href: "#contact" },
+    { label: "做题 AI", href: "/math" }
   ],
   person: {
     name: "Jiahan Wang",
@@ -83,7 +84,7 @@ export const siteContent = {
     description:
       "La base de connaissances indexe pour l'instant mon CV converti en base textuelle, avec une structure pensée pour accueillir ensuite d'autres projets, notes techniques ou publications. L'embedding est local, gratuit et volontairement léger pour tenir sur une petite machine ; seul le LLM de génération se branche sur votre API.",
     hint:
-      "Le service répond dans la langue de la question et cite les passages récupérés par le RAG.",
+      "Entrée pour envoyer, Maj+Entrée pour revenir à la ligne. Le service répond dans la langue de la question et cite les passages récupérés par le RAG.",
     welcome:
       "Bonjour. Vous pouvez me poser une question sur mes projets IA, mon expérience en RAG, mes systèmes embarqués, mon parcours ISEP / INSA ou mon objectif d'alternance.",
     prompts: [
@@ -311,7 +312,7 @@ export const zhPageContent = {
     chatLabel: "中文助手",
     chatTitle: "围绕王稼瀚的项目、经历、技能和目标进行问答",
     clearLabel: "清空",
-    hint: "建议直接用中文提问，回答会更自然。",
+    hint: "回车发送，Shift+回车换行。建议直接用中文提问，回答会更自然。",
     sourceTitle: "检索来源",
     sourceNote: "回答会尽量只基于当前知识库，不确定时会明确说明。",
     emptySources: "暂时还没有显示来源。",

@@ -16,8 +16,8 @@ function usePageMetadata(meta) {
     document.documentElement.lang = meta.lang;
     updateMeta("description", meta.description);
     updateMeta("robots", meta.robots);
-    updateMeta("theme-color", "#0b0f17");
-  }, [meta.description, meta.lang, meta.robots, meta.title]);
+    updateMeta("theme-color", meta.themeColor || "#f5f4ed");
+  }, [meta.description, meta.lang, meta.robots, meta.title, meta.themeColor]);
 }
 
 function useRevealObserver(pageKey) {
@@ -36,7 +36,7 @@ function useRevealObserver(pageKey) {
           }
         });
       },
-      { threshold: 0.18 }
+      { threshold: 0.14 }
     );
 
     items.forEach((item) => observer.observe(item));
@@ -148,6 +148,23 @@ function useRagChat(config) {
     await askQuestion(input);
   };
 
+  const handleInputKeyDown = async (event) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    if (event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) {
+      return;
+    }
+
+    if (event.nativeEvent.isComposing) {
+      return;
+    }
+
+    event.preventDefault();
+    await askQuestion(input);
+  };
+
   return {
     messages,
     sources,
@@ -158,7 +175,8 @@ function useRagChat(config) {
     statusClass,
     clearChat,
     askQuestion,
-    handleSubmit
+    handleSubmit,
+    handleInputKeyDown
   };
 }
 
@@ -229,8 +247,9 @@ function PortfolioPage() {
         Aller au contenu
       </a>
 
-      <div className="site-shell">
-        <header className="site-header">
+      {/* ── Header ─────────────────────────────────────────── */}
+      <header className="site-header">
+        <div className="site-container header-inner">
           <a className="brand" href="#top" aria-label="Retour en haut de page">
             <span className="brand-mark">JW</span>
             <span className="brand-copy">
@@ -260,61 +279,69 @@ function PortfolioPage() {
               </a>
             ))}
           </nav>
-        </header>
+        </div>
+      </header>
 
-        <main id="main">
-          <section className="hero section" id="top">
-            <div className="hero-copy reveal">
-              <p className="eyebrow">{siteContent.person.kicker}</p>
-              <h1>{siteContent.person.title}</h1>
-              <p className="hero-lead">{siteContent.person.lead}</p>
+      <main id="main">
+        {/* ── Hero — Light ────────────────────────────────── */}
+        <section className="section-light hero-section" id="top">
+          <div className="site-container">
+            <div className="hero-grid">
+              <div className="hero-copy reveal">
+                <p className="eyebrow">{siteContent.person.kicker}</p>
+                <h1>{siteContent.person.title}</h1>
+                <p className="hero-lead">{siteContent.person.lead}</p>
 
-              <div className="hero-cta" id="hero-actions">
-                {siteContent.person.heroActions.map((action) => (
-                  <a className={`btn btn-${action.variant}`} key={action.label} {...renderLinkProps(action)}>
-                    {action.label}
-                  </a>
-                ))}
-              </div>
-
-              <ul className="signal-list" aria-label="Faits saillants">
-                {siteContent.person.heroSignals.map((signal) => (
-                  <li className="signal-pill" key={signal}>
-                    {signal}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <aside className="hero-panel reveal" aria-label="Portrait, statut et focus">
-              <div className="hero-panel-head">
-                <div className="hero-portrait-frame">
-                  <img
-                    className="hero-portrait"
-                    src={siteContent.person.portraitSrc}
-                    alt="Portrait de Jiahan Wang"
-                  />
+                <div className="hero-cta" id="hero-actions">
+                  {siteContent.person.heroActions.map((action) => (
+                    <a className={`btn btn-${action.variant}`} key={action.label} {...renderLinkProps(action)}>
+                      {action.label}
+                    </a>
+                  ))}
                 </div>
 
-                <div className="hero-panel-copy">
-                  <div className="panel-label">Statut / Focus</div>
-                  <h2>{siteContent.person.panel.title}</h2>
-                  <p className="panel-copy">{siteContent.person.panel.copy}</p>
-                </div>
+                <ul className="signal-list" aria-label="Faits saillants">
+                  {siteContent.person.heroSignals.map((signal) => (
+                    <li className="signal-pill" key={signal}>
+                      {signal}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <div className="panel-grid" id="panel-items">
-                {siteContent.person.panel.items.map((item) => (
-                  <div className="panel-item" key={item.label}>
-                    <span className="panel-item-label">{item.label}</span>
-                    <strong className="panel-item-value">{item.value}</strong>
+              <aside className="hero-panel reveal" aria-label="Portrait, statut et focus">
+                <div className="hero-panel-head">
+                  <div className="hero-portrait-frame">
+                    <img
+                      className="hero-portrait"
+                      src={siteContent.person.portraitSrc}
+                      alt="Portrait de Jiahan Wang"
+                    />
                   </div>
-                ))}
-              </div>
-            </aside>
-          </section>
 
-          <section className="section" id="assistant">
+                  <div className="hero-panel-copy">
+                    <div className="panel-label">Statut / Focus</div>
+                    <h2>{siteContent.person.panel.title}</h2>
+                    <p className="panel-copy">{siteContent.person.panel.copy}</p>
+                  </div>
+                </div>
+
+                <div className="panel-grid" id="panel-items">
+                  {siteContent.person.panel.items.map((item) => (
+                    <div className="panel-item" key={item.label}>
+                      <span className="panel-item-label">{item.label}</span>
+                      <strong className="panel-item-value">{item.value}</strong>
+                    </div>
+                  ))}
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Assistant AI — Dark ─────────────────────────── */}
+        <section className="section-dark" id="assistant">
+          <div className="site-container">
             <div className="section-heading reveal">
               <p className="section-kicker">Assistant AI</p>
               <h2>Un point d&apos;entrée RAG pour poser des questions directement sur mon profil.</h2>
@@ -373,6 +400,7 @@ function PortfolioPage() {
                     required
                     value={assistant.input}
                     onChange={(event) => assistant.setInput(event.target.value)}
+                    onKeyDown={assistant.handleInputKeyDown}
                     disabled={assistant.loading}
                   />
                   <div className="chat-actions">
@@ -386,9 +414,12 @@ function PortfolioPage() {
                 </form>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="section" id="about">
+        {/* ── À propos — Light ────────────────────────────── */}
+        <section className="section-light" id="about">
+          <div className="site-container">
             <div className="section-heading reveal">
               <p className="section-kicker">À propos</p>
               <h2>Un profil d&apos;ingénieur en construction, avec une logique produit très concrète.</h2>
@@ -403,16 +434,19 @@ function PortfolioPage() {
 
               <div className="metrics-grid" id="metrics-grid">
                 {siteContent.person.metrics.map((metric) => (
-                  <article className="metric-card reveal" key={metric.label}>
+                  <article className="metric-card card reveal" key={metric.label}>
                     <strong className="metric-value">{metric.value}</strong>
                     <p className="metric-label">{metric.label}</p>
                   </article>
                 ))}
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="section" id="skills">
+        {/* ── Compétences — Dark ──────────────────────────── */}
+        <section className="section-dark" id="skills">
+          <div className="site-container">
             <div className="section-heading reveal">
               <p className="section-kicker">Compétences</p>
               <h2>Des bases solides en logiciel, IA appliquée et systèmes embarqués.</h2>
@@ -433,9 +467,12 @@ function PortfolioPage() {
                 </article>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="section" id="projects">
+        {/* ── Projets — Light ─────────────────────────────── */}
+        <section className="section-light" id="projects">
+          <div className="site-container">
             <div className="section-heading reveal">
               <p className="section-kicker">Projets</p>
               <h2>Des projets construits pour être utiles, mesurables et testables.</h2>
@@ -449,7 +486,7 @@ function PortfolioPage() {
                   <p className="project-summary">{project.summary}</p>
 
                   {[
-                    { label: "Probleme", value: project.problem },
+                    { label: "Problème", value: project.problem },
                     { label: "Contribution", value: project.role },
                     { label: "Impact", value: project.outcome }
                   ].map((detail) => (
@@ -469,9 +506,12 @@ function PortfolioPage() {
                 </article>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="section" id="journey">
+        {/* ── Parcours — Dark ─────────────────────────────── */}
+        <section className="section-dark" id="journey">
+          <div className="site-container">
             <div className="section-heading reveal">
               <p className="section-kicker">Formation &amp; Expérience</p>
               <h2>Un parcours international entre Shanghai, Lyon et Paris.</h2>
@@ -518,9 +558,12 @@ function PortfolioPage() {
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="section" id="contact">
+        {/* ── Contact — Light ─────────────────────────────── */}
+        <section className="section-light" id="contact">
+          <div className="site-container">
             <div className="contact-panel reveal">
               <div className="contact-copy">
                 <p className="section-kicker">Contact</p>
@@ -544,16 +587,19 @@ function PortfolioPage() {
                 })}
               </div>
             </div>
-          </section>
-        </main>
+          </div>
+        </section>
+      </main>
 
-        <footer className="site-footer">
+      {/* ── Footer — Dark ───────────────────────────────── */}
+      <footer className="site-footer section-dark">
+        <div className="site-container">
           <p>
             &copy; {new Date().getFullYear()} Jiahan Wang &mdash; Portfolio avec assistant RAG
             local, déployé sur AWS EC2.
           </p>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </>
   );
 }
@@ -561,7 +607,7 @@ function PortfolioPage() {
 function ChinesePage() {
   const assistant = useRagChat(zhPageContent.assistant);
 
-  usePageMetadata(zhPageContent.meta);
+  usePageMetadata({ ...zhPageContent.meta, themeColor: "#141413" });
   useRevealObserver("zh");
 
   return (
@@ -654,6 +700,7 @@ function ChinesePage() {
                 required
                 value={assistant.input}
                 onChange={(event) => assistant.setInput(event.target.value)}
+                onKeyDown={assistant.handleInputKeyDown}
                 disabled={assistant.loading}
               />
               <div className="chat-actions">

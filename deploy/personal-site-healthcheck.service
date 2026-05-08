@@ -1,0 +1,11 @@
+[Unit]
+Description=Deep health probe for Jiahan Wang personal site (LLM chain)
+Wants=network-online.target
+After=network-online.target personal-site.service
+
+[Service]
+Type=oneshot
+User=ec2-user
+WorkingDirectory=/home/ec2-user/myself_ec2
+EnvironmentFile=/home/ec2-user/myself_ec2/backend/.env
+ExecStart=/home/ec2-user/myself_ec2/.venv/bin/python -m backend.healthcheck
