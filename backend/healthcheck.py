@@ -37,6 +37,9 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
 )
 log = logging.getLogger("healthcheck")
+# httpx logs full request URLs at INFO level. Notification providers place
+# credentials in the URL path, so keep those URLs out of the system journal.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 @dataclass

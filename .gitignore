@@ -5,6 +5,7 @@ resume-page-*.png
 backend/.env
 backend/.env.*-backup-*
 backend/auth.json
+backend/auth.json.*
 backend/data/
 backend/.healthcheck_state.json
 .claude/

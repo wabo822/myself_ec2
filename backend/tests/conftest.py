@@ -13,7 +13,7 @@ if str(ROOT_DIR) not in sys.path:
 
 
 @pytest.fixture()
-def client(monkeypatch):
+def client(monkeypatch, tmp_path):
     monkeypatch.setenv("LLM_API_KEY", "test-key")
     monkeypatch.setenv("LLM_MODEL", "test-model")
     monkeypatch.setenv("LLM_API_BASE_URL", "https://example.test/v1")
@@ -22,6 +22,7 @@ def client(monkeypatch):
     with patch("backend.rag.KnowledgeBase.load", return_value=None):
         from backend import app as app_module
 
+        monkeypatch.setattr(app_module, "HEALTHCHECK_STATE_FILE", tmp_path / "healthcheck-state.json")
         app_module.knowledge_base.document_count = 1
         app_module.knowledge_base.chunk_count = 3
         with TestClient(app_module.app) as test_client:
